@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Unit 1 – Lesson 3: Now Starts Long Ago — Mini Platform (EN Tabs + Integrated Grammar)</title>
+<style>
+  :root{--bg:#f9fafb;--text:#0f172a;--muted:#6b7280;--accent:#6c63ff;--accent2:#00bfa6;--good:#22c55e;--bad:#ef4444}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Cairo',system-ui,Segoe UI,Arial;background:var(--bg);color:var(--text)}
+  header{position:sticky;top:0;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;padding:14px 16px;z-index:10}
+  header h1{font-size:18px;margin:0}
+  nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  nav button{flex:1;border:0;border-radius:10px;padding:10px;background:#fff;color:#111;font-weight:700}
+  nav button.active{background:#fde047}
+  main{padding:14px}
+  .view{display:none}
+  .view.active{display:block}
+  .section-card{background:#fff;border-radius:16px;padding:14px;box-shadow:0 6px 16px rgba(0,0,0,.08);margin-bottom:14px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+  .card{border-radius:16px;padding:14px;color:#111;box-shadow:0 6px 16px rgba(0,0,0,.08)}
+  .chip{display:inline-block;background:rgba(0,0,0,.06);padding:4px 8px;border-radius:999px;font-size:12px;margin-inline-start:6px}
+  .stack{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .btn{background:var(--accent);color:#fff;border:0;border-radius:10px;padding:10px 12px;font-weight:700}
+  .btn.alt{background:var(--accent2)}
+  .btn.ghost{background:#fff;color:var(--accent);border:2px solid var(--accent)}
+  .input{width:100%;padding:10px;border-radius:10px;border:2px solid #e5e7eb}
+  .muted{color:var(--muted)}
+  .option{padding:10px;border:2px solid #e5e7eb;border-radius:12px;margin-top:8px}
+  .option.correct{border-color:#16a34a;background:#e8fbef}
+  .option.wrong{border-color:#ef4444;background:#fee2e2}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  @media(min-width:680px){.grid{grid-template-columns:repeat(4,1fr)}}
+  canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:100}
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+<header>
+  <h1>Unit 1 – Lesson 3: Now Starts Long Ago • Mini Platform + Integrated Grammar</h1>
+  <nav id="nav"></nav>
+</header>
+<main>
+  <!-- VOCAB -->
+  <section id="vocab" class="view active">
+    <div class="section-card">
+      <h2>🎴 Vocabulary Cards + Dictation</h2>
+      <p class="muted">Each card has a unique color. Tap ▶️ for British pronunciation; try dictation from Arabic meaning.</p>
+      <div id="vocabCards" class="cards"></div>
+    </div>
+    <div class="section-card" id="dictation">
+      <h3>✍️ Word Dictation from Arabic Meaning</h3>
+      <div id="dictWrap"></div>
+    </div>
+  </section>
+
+  <!-- READING -->
+  <section id="reading" class="view">
+    <div class="section-card">
+      <h2>📖 Simplified Reading – Slow British Voice (Sentence by Sentence)</h2>
+      <div id="sentences"></div>
+      <div class="stack" style="margin-top:10px">
+        <button id="playAll" class="btn">▶️ Play All Slowly</button>
+        <button id="stopAll" class="btn ghost">⏹️ Stop</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRAMMAR (Integrated) -->
+  <section id="grammar" class="view">
+    <div class="section-card">
+      <h2>🧠 Grammar: Past Simple & Past Continuous</h2>
+      <p class="muted">Quick rules + many <b>4‑option MCQs</b> (no drag & drop).</p>
+      <div class="card">
+        <h3>Past Simple</h3>
+        <p>Used for <b>completed actions</b> in the past at a specific time.</p>
+        <p class="ex">Example: <b>I visited</b> the museum yesterday. <button class="btn ghost" data-say="I visited the museum yesterday.">▶️ Speak</button></p>
+        <p class="muted">Signal words: <em>yesterday, last week, in 2010, then…</em></p>
+      </div>
+      <div class="card">
+        <h3>Past Continuous</h3>
+        <p>Used for an action <b>in progress</b> at a time in the past, often with <b>while/when</b>.</p>
+        <p class="ex">Example: <b>I was reading</b> when the doorbell rang. <button class="btn ghost" data-say="I was reading when the doorbell rang.">▶️ Speak</button></p>
+        <p class="muted">Signal words: <em>while, when, at 2 o’clock, as, just as…</em></p>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h2>📊 MCQ Practice (20 items)</h2>
+      <div id="mcqWrap"></div>
+    </div>
+  </section>
+
+  <!-- GAMES -->
+  <section id="games" class="view">
+    <div class="section-card">
+      <h2>🧩 Interactive Games</h2>
+      <div id="matchGame" class="section-card"></div>
+      <div id="kahootGame" class="section-card"></div>
+    </div>
+  </section>
+
+  <!-- EXAM -->
+  <section id="exam" class="view">
+    <div class="section-card">
+      <h2>📝 Interactive Lesson Exam</h2>
+      <div class="stack">
+        <input id="studentName" class="input" placeholder="اكتب اسمك الثلاثي"/>
+        <button id="startExam" class="btn alt">Start Exam</button>
+      </div>
+      <div id="examBox" class="section-card"></div>
+      <div id="examResult" class="score"></div>
+      <div id="examReview" class="section-card"></div>
+    </div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section id="settings" class="view">
+    <div class="section-card">
+      <h2>⚙️ Settings</h2>
+      <div class="stack">
+        <button class="btn ghost" id="testVoice">Test British Voice</button>
+      </div>
+      <p class="muted">We use <b>SpeechSynthesis</b> with British English (en‑GB). Some phones need a first tap to allow audio.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+/*************** Data ***************/
+const COLORS = ['#ffadad','#ffd6a5','#fdffb6','#caffbf','#9bf6ff','#a0c4ff','#bdb2ff','#ffc6ff','#f1f0ff','#e6fffa'];
+const VOCAB = [
+  {w:'ancient', ar:'قديم / عتيق', ex:'Ancient tools were simple but useful.'},
+  {w:'discover', ar:'يكتشف', ex:'People discovered writing a long time ago.'},
+  {w:'writing', ar:'الكتابة', ex:'Writing helped people record ideas.'},
+  {w:'progress', ar:'تقدّم', ex:'Technology brought quick progress.'},
+  {w:'remember', ar:'يتذكّر', ex:'We remember the past to learn from it.'},
+  {w:'communicate', ar:'يتواصل', ex:'People used letters to communicate.'},
+  {w:'technology', ar:'تكنولوجيا', ex:'Modern technology makes life easier.'},
+  {w:'farm', ar:'يزرع / الزراعة', ex:'Long ago, people farmed and raised animals.'},
+  {w:'raise', ar:'يربّي', ex:'Families raised goats and sheep.'},
+  {w:'during', ar:'أثناء', ex:'During the lesson, the bell rang.'},
+  {w:'while', ar:'بينما', ex:'While I was walking, I saw a star.'},
+  {w:'accident', ar:'حادث', ex:'He had an accident on his way home.'}
+];
+
+const SENTENCES = [
+  'Long ago, people mainly lived by farming and raising animals.',
+  'The discovery of writing helped humans record ideas and share knowledge.',
+  'New tools and early technology made daily life easier and showed progress.',
+  'We remember the past to learn useful lessons for the future.',
+  'Use the past simple for completed actions in the past.',
+  'Use the past continuous to describe an action in progress at a time in the past.',
+  'Example: At two o’clock, I was reading when the doorbell rang.'
+];
+
+const EXAM = [
+  {q:'We use the past simple to talk about _____.', opts:['future plans','completed actions in the past','ongoing actions now','habits only'], a:1},
+  {q:'We use the past continuous to show _____.', opts:['a finished action','an action in progress in the past','a promise','a request'], a:1},
+  {q:'At 2 o’clock, I _____ a book when the phone rang.', opts:['read','was reading','am reading','have read'], a:1},
+  {q:'Long ago, people mainly _____ and raised animals.', opts:['farmed','are farming','were farm','farms'], a:0},
+  {q:'“discover” means _____.', opts:['to forget','to find or learn for the first time','to repeat','to close'], a:1},
+  {q:'“ancient” is closest in meaning to _____.', opts:['modern','very old','fast','private'], a:1},
+  {q:'While I _____ to school, it started to rain.', opts:['walk','was walking','walked','am walking'], a:1},
+  {q:'Writing helped people _____ ideas.', opts:['lose','record','hide','buy'], a:1},
+  {q:'“during” means _____.', opts:['before','after','at the same time','far from'], a:2},
+  {q:'Technology can show human _____.', opts:['progress','silence','rain','sleep'], a:0}
+];
+
+/*************** Tabs ***************/
+const tabs=[{id:'vocab',label:'Vocabulary'},{id:'reading',label:'Reading'},{id:'grammar',label:'Grammar'},{id:'games',label:'Games'},{id:'exam',label:'Exam'},{id:'settings',label:'Settings'}];
+const nav=document.getElementById('nav'); const views={};
+for(const t of tabs){const b=document.createElement('button'); b.textContent=t.label; b.onclick=()=>show(t.id); nav.appendChild(b); views[t.id]=document.getElementById(t.id);} nav.firstChild.classList.add('active');
+function show(id){document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active')); [...nav.children].find(b=>b.textContent===tabs.find(t=>t.id===id).label).classList.add('active'); Object.values(views).forEach(v=>v.classList.remove('active')); views[id].classList.add('active');}
+
+/*************** Voice ***************/
+let preferredVoice=null; function loadVoices(){const vs=speechSynthesis.getVoices(); preferredVoice=vs.find(v=>v.lang && v.lang.startsWith('en-GB')) || vs.find(v=>v.lang && v.lang.startsWith('en')) || null;} window.speechSynthesis.onvoiceschanged=loadVoices; loadVoices();
+function speak(text, rate=0.82){const u=new SpeechSynthesisUtterance(text); if(preferredVoice) u.voice=preferredVoice; u.lang='en-GB'; u.rate=rate; u.pitch=1; speechSynthesis.cancel(); speechSynthesis.speak(u);} 
+function beep(good=true){const ctx=new(window.AudioContext||window.webkitAudioContext)(); const o=ctx.createOscillator(), g=ctx.createGain(); o.type=good?'triangle':'sawtooth'; o.frequency.value=good?880:220; g.gain.value=0.05; o.connect(g); g.connect(ctx.destination); o.start(); setTimeout(()=>{o.stop();ctx.close();},180);} 
+
+document.getElementById('testVoice').onclick=()=>speak('This is a British English voice test for Lesson Three.',0.82);
+
+document.body.addEventListener('click',(e)=>{const t=e.target.getAttribute('data-say'); if(t) speak(t,0.84);});
+
+/*************** Vocabulary Cards ***************/
+const vc=document.getElementById('vocabCards');
+VOCAB.forEach((it,i)=>{const c=document.createElement('div'); c.className='card'; c.style.background=COLORS[i%COLORS.length]; c.innerHTML=`<h3>${it.w} <span class='chip'>${it.ar}</span></h3><p>📌 <em>${it.ex}</em></p><div class='stack'><button class='btn' data-w='${it.w}'>▶️ Pronounce</button><button class='btn ghost' data-ex='${it.ex}'>🎧 Speak Example</button></div>`; vc.appendChild(c);} );
+vc.addEventListener('click',(e)=>{const w=e.target.getAttribute('data-w'); const ex=e.target.getAttribute('data-ex'); if(w) speak(w,0.92); if(ex) speak(ex,0.9);});
+
+/*************** Dictation ***************/
+const dictWrap=document.getElementById('dictWrap'); let dIdx=0, dScore=0, order=[...VOCAB.keys()]; shuffle(order);
+function renderDict(){const item=VOCAB[order[dIdx]]; dictWrap.innerHTML=`<div class='stack'><span class='chip'>Meaning: <b>${item.ar}</b></span><button class='btn' id='playWord'>▶️ Hear Word</button></div><input id='ans' class='input' placeholder='Type the word in English' autocomplete='off'/><div class='stack' style='margin-top:8px'><button class='btn alt' id='check'>Check</button><span class='chip'>Score: ${dScore} / ${dIdx}</span></div>`; document.getElementById('playWord').onclick=()=>speak(item.w,0.9); document.getElementById('check').onclick=()=>{const a=document.getElementById('ans').value.trim().toLowerCase(); const ok=a===item.w.toLowerCase(); if(ok){dScore++; confetti(70); beep(true);} else {beep(false);} dIdx++; if(dIdx<order.length) renderDict(); else dictWrap.innerHTML=`<h4>Great! Your dictation score: ${dScore} / ${order.length}</h4>`;};}
+renderDict();
+
+/*************** Reading ***************/
+const sWrap=document.getElementById('sentences');
+SENTENCES.forEach((line,idx)=>{const row=document.createElement('div'); row.className='section-card'; row.innerHTML=`<div class='stack'><span><b>${idx+1}.</b> ${line}</span><button class='btn' data-play='${idx}'>▶️ Play</button><button class='btn ghost' data-replay='${idx}'>🔁 Replay</button></div>`; sWrap.appendChild(row);} );
+sWrap.addEventListener('click',(e)=>{const i=e.target.getAttribute('data-play')||e.target.getAttribute('data-replay'); if(i!==null){ speak(SENTENCES[+i],0.8);} });
+
+document.getElementById('playAll').onclick=()=>{speechSynthesis.cancel(); SENTENCES.forEach((line,i)=> setTimeout(()=>speak(line,0.8), i*2700));};
+document.getElementById('stopAll').onclick=()=>speechSynthesis.cancel();
+
+/*************** Grammar MCQs (20) ***************/
+const MCQS = [
+  {q:'At 8 pm, I ____ dinner when my friend called.', opts:['cooked','was cooking','cook','am cooking'], a:1},
+  {q:'Yesterday, we ____ a film at the museum.', opts:['watched','were watching','watch','are watching'], a:0},
+  {q:'While she ____ to school, it started to rain.', opts:['walked','was walking','walks','is walking'], a:1},
+  {q:'He ____ the letter and then went to sleep.', opts:['wrote','was writing','writes','is writing'], a:0},
+  {q:'They ____ when the teacher arrived.', opts:['played','were playing','play','are playing'], a:1},
+  {q:'Sama ____ home when she met her friend.', opts:['returned','was returning','returns','is returning'], a:0},
+  {q:'At two o’clock, I ____ when the doorbell rang.', opts:['read','was reading','reads','am reading'], a:1},
+  {q:'Mr. Ramy ____ his wife when he dropped his mobile.', opts:['called','was calling','calls','is calling'], a:1},
+  {q:'We ____ the museum last week.', opts:['visited','were visiting','visit','are visiting'], a:0},
+  {q:'The students ____ quietly while the teacher was speaking.', opts:['sat','were sitting','sit','are sitting'], a:0},
+  {q:'She ____ the window when the bird flew in.', opts:['opened','was opening','opens','is opening'], a:0},
+  {q:'They ____ football at 6 pm yesterday.', opts:['played','were playing','play','are playing'], a:1},
+  {q:'I ____ my notes when the light went out.', opts:['was writing','wrote','write','am writing'], a:0},
+  {q:'He ____ a photo and then posted it.', opts:['took','was taking','takes','is taking'], a:0},
+  {q:'While we ____ dinner, the guests arrived.', opts:['cooked','were cooking','cook','are cooking'], a:1},
+  {q:'Noura ____ her keys and left the house.', opts:['found','was finding','finds','is finding'], a:0},
+  {q:'It ____ heavily when we reached school.', opts:['rained','was raining','rains','is raining'], a:1},
+  {q:'The bus ____ at 7 am and we got on.', opts:['arrived','was arriving','arrives','is arriving'], a:0},
+  {q:'I ____ to music when you called.', opts:['listened','was listening','listen','am listening'], a:1},
+  {q:'They ____ the project yesterday.', opts:['finished','were finishing','finish','are finishing'], a:0}
+];
+const mcqWrap=document.getElementById('mcqWrap');
+MCQS.forEach((q,idx)=>{const box=document.createElement('div'); box.className='section-card'; box.innerHTML=`<p><b>${idx+1}.</b> ${q.q}</p>`; q.opts.forEach((op,i)=>{const d=document.createElement('div'); d.className='option'; d.textContent=op; d.onclick=()=>{box.querySelectorAll('.option').forEach(o=>o.onclick=null); const ok=i===q.a; if(ok){d.classList.add('correct'); confetti(70); beep(true);} else {d.classList.add('wrong'); beep(false);} }; box.appendChild(d);}); mcqWrap.appendChild(box);});
+
+/*************** Games ***************/
+// Match Word ↔ Meaning
+const match=document.getElementById('matchGame'); match.innerHTML='<h3>🃏 Match Word ↔ Meaning</h3><div id="matchGrid" class="grid"></div>'; const PAIRS=VOCAB.slice(0,8).map(x=>({w:x.w,ar:x.ar})); let first=null, found=0; buildMatch();
+function buildMatch(){const g=document.getElementById('matchGrid'); const arr=[]; PAIRS.forEach((p,i)=>{arr.push({t:p.w,k:i}); arr.push({t:p.ar,k:i});}); shuffle(arr); g.innerHTML=''; arr.forEach(t=>{const d=document.createElement('div'); d.className='tile'; d.textContent=t.t; d.dataset.key=t.k; d.onclick=()=>sel(d); g.appendChild(d);});}
+function sel(d){ if(d.classList.contains('correct')) return; d.classList.toggle('selected'); if(!first){first=d; return;} if(first.dataset.key===d.dataset.key && first!==d){[first,d].forEach(x=>{x.classList.add('correct'); x.classList.remove('selected');}); found++; confetti(60); beep(true); if(found===PAIRS.length){setTimeout(()=>{alert('Great! Round completed.'); found=0; buildMatch();},300);} } else { [first,d].forEach(x=>x.classList.add('wrong')); beep(false); setTimeout(()=>{[first,d].forEach(x=>x.classList.remove('wrong','selected'));},500);} first=null; }
+
+// Mini Kahoot (Arabic meaning → English choices)
+const kahoot=document.getElementById('kahootGame'); kahoot.innerHTML='<h3>⚡ Mini Kahoot</h3><div class="kahoot"><div class="k-q" id="kQ"></div><div id="kOpts"></div><div class="k-score"><span>Score: </span><b id="kScore">0</b> • <span class="k-timer" id="kTimer">10s</span></div><div class="stack" style="margin-top:8px"><button class="btn" id="kStart">Start Round</button><button class="btn ghost" id="kNext">Next Round</button></div></div>';
+let kScore=0, kTime=10, kInterval=null; function startKahoot(){clearInterval(kInterval); kTime=10; document.getElementById('kTimer').textContent=kTime+'s'; const item=VOCAB[Math.floor(Math.random()*VOCAB.length)]; document.getElementById('kQ').innerHTML=`Arabic meaning: <b>${item.ar}</b> — choose the correct English word:`; const optsCont=document.getElementById('kOpts'); optsCont.innerHTML=''; const distractors=shuffle(VOCAB.filter(v=>v!==item).map(v=>v.w)).slice(0,3); const options=shuffle([item.w, ...distractors]); options.forEach(op=>{const d=document.createElement('div'); d.className='option'; d.textContent=op; d.onclick=()=>{optsCont.querySelectorAll('.option').forEach(o=>o.onclick=null); const ok=op===item.w; if(ok){d.classList.add('correct'); kScore+=kTime; confetti(90); beep(true);} else {d.classList.add('wrong'); beep(false);} document.getElementById('kScore').textContent=kScore; clearInterval(kInterval);}; optsCont.appendChild(d);}); kInterval=setInterval(()=>{kTime--; document.getElementById('kTimer').textContent=kTime+'s'; if(kTime<=0){clearInterval(kInterval); optsCont.querySelectorAll('.option').forEach(o=>o.onclick=null); alert('Time is up! Try another round.'); }},1000);} 
+document.getElementById('kStart').onclick=startKahoot; document.getElementById('kNext').onclick=startKahoot;
+
+/*************** Exam ***************/
+const examBox=document.getElementById('examBox'); const examBtn=document.getElementById('startExam'); const examRes=document.getElementById('examResult'); const examReview=document.getElementById('examReview'); let currentQ=0, score=0, exOrder=[...EXAM.keys()]; shuffle(exOrder);
+examBtn.onclick=()=>{const name=document.getElementById('studentName').value.trim(); if(!name){alert('Please enter your full name.'); return;} currentQ=0; score=0; shuffle(exOrder); renderQ();};
+function renderQ(){const q=EXAM[exOrder[currentQ]]; examReview.innerHTML=''; examRes.textContent=''; examBox.innerHTML=`<div class='card'><h3>Question ${currentQ+1} of ${EXAM.length}</h3><p>${q.q}</p></div>`; q.opts.forEach((op,i)=>{const d=document.createElement('div'); d.className='option'; d.textContent=op; d.onclick=()=>choose(i); examBox.appendChild(d);});}
+function choose(i){const q=EXAM[exOrder[currentQ]]; const opts=[...examBox.querySelectorAll('.option')]; opts.forEach(o=>o.onclick=null); const ok=i===q.a; opts[q.a].classList.add('correct'); if(!ok){opts[i].classList.add('wrong'); beep(false);} else {score++; confetti(90); beep(true);} setTimeout(()=>{currentQ++; if(currentQ<EXAM.length) renderQ(); else finishExam();}, 450);}
+function finishExam(){examBox.innerHTML=''; const name=document.getElementById('studentName').value.trim(); examRes.innerHTML=`Your score: <b>${score}</b> / ${EXAM.length}`; const review=exOrder.map(idx=>{const q=EXAM[idx]; return `<div><b>Q:</b> ${q.q}<br><span class='muted'>✔ Correct:</span> ${q.opts[q.a]}</div>`;}).join('<hr>'); examReview.innerHTML = `<h4>Quick Review:</h4>${review}`; show('games');}
+
+/*************** Helpers ***************/
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a;}
+const canvas=document.getElementById('confetti'); const ctx=canvas.getContext('2d'); let particles=[]; function resize(){canvas.width=innerWidth; canvas.height=innerHeight;} window.addEventListener('resize',resize); resize(); function confetti(n=80){for(let i=0;i<n;i++) particles.push({x:Math.random()*canvas.width,y:-10,vx:(Math.random()-.5)*3,vy:Math.random()*3+2,c:`hsl(${Math.random()*360},90%,60%)`,s:Math.random()*6+4,a:1});} function tick(){ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.x+=p.vx; p.y+=p.vy; p.vy+=0.05; p.a-=0.01;}); particles=particles.filter(p=>p.a>0); particles.forEach(p=>{ctx.globalAlpha=p.a; ctx.fillStyle=p.c; ctx.fillRect(p.x,p.y,p.s,p.s)}); requestAnimationFrame(tick);} requestAnimationFrame(tick);
+</script>
+</body>
+</html>
